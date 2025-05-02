@@ -1,0 +1,20 @@
+{
+	"name": "openmcp",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"lint": "biome check",
+		"lint:fix": "biome check --write"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.11.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"typescript": "^5.8.3"
+	}
+}

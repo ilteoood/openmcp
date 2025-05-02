@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"allowJs": true,
+		"checkJs": true,
+		"erasableSyntaxOnly": true,
+		"allowSyntheticDefaultImports": false,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"allowUnusedLabels": false,
+		"allowUnreachableCode": false
+	}
+}
