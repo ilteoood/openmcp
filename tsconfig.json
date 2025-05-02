@@ -1,11 +1,10 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "ESNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		"allowJs": true,
 		"checkJs": true,
-		"erasableSyntaxOnly": true,
-		"allowSyntheticDefaultImports": false,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
