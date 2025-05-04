@@ -1,7 +1,7 @@
 import { z } from "zod";
-import type { ParameterObject } from "./types";
+import type { ParameterObject } from "./types.js";
 
-const buildBaseZodType = (schema: any) => {
+const buildBaseZodType = (schema: Record<string, unknown>) => {
 	if (schema.type === "string") {
 		return z.string();
 	}
@@ -21,7 +21,7 @@ const buildBaseZodType = (schema: any) => {
 		const zodObjectShape = Object.entries(schema.properties || {}).reduce<
 			Record<string, z.ZodType>
 		>((acc, [propertyName, property]) => {
-            acc[propertyName] = createFromSchema(property);
+			acc[propertyName] = createFromSchema(property);
 			return acc;
 		}, {});
 		return z.object(zodObjectShape);
@@ -30,7 +30,7 @@ const buildBaseZodType = (schema: any) => {
 };
 
 const createFromSchema = (
-	schema: any,
+	schema: Record<string, string>,
 	parameter?: ParameterObject,
 ): z.ZodType<unknown> => {
 	const description = parameter?.description || schema?.description || "";
