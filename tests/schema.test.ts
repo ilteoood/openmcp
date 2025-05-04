@@ -10,6 +10,7 @@ describe("schema", () => {
 		{ type: "number", index: 3 },
 		{ type: "array", index: 4 },
 		{ type: "object", index: 5 },
+		{ type: "integer not required", index: 6 },
 	];
 
 	it.each(fieldsToGenerate)(

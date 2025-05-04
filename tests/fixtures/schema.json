@@ -82,6 +82,12 @@
 							"type": "object",
 							"properties": { "name": { "type": "string" } }
 						}
+					},
+					{
+						"name": "age",
+						"in": "query",
+						"description": "Age of the pet that needs to be updated",
+						"schema": { "type": "integer" }
 					}
 				],
 				"responses": {

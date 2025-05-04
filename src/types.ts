@@ -5,4 +5,8 @@ export type ParameterObject =
 	| OpenAPIV3.ParameterObject
 	| OpenAPIV3_1.ParameterObject;
 
-export type ParametersWithRef = (OpenAPIV2.PathItemObject | OpenAPIV3.PathItemObject | OpenAPIV3_1.PathItemObject)['parameters'];
+export type ParametersWithRef = (
+	| OpenAPIV2.PathItemObject
+	| OpenAPIV3.PathItemObject
+	| OpenAPIV3_1.PathItemObject
+)["parameters"];

@@ -36,7 +36,7 @@ const createFromSchema = (
 	const description = parameter?.description || schema?.description || "";
 	const zodType = buildBaseZodType(schema).describe(description);
 
-	if (!parameter?.required || !schema?.required) {
+	if (!parameter?.required && !schema?.required) {
 		return zodType.optional();
 	}
 

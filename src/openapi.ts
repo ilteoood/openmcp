@@ -9,7 +9,8 @@ export class OpenAPIUtil {
 
 	static async from(resourceLocator: string): Promise<OpenAPIUtil> {
 		const parsedDocument = await SwaggerParser.parse(resourceLocator);
-		const dereferencedDocument = await SwaggerParser.dereference(parsedDocument)
+		const dereferencedDocument =
+			await SwaggerParser.dereference(parsedDocument);
 		return new OpenAPIUtil(dereferencedDocument);
 	}
 
@@ -56,7 +57,10 @@ export class OpenAPIUtil {
 	) {
 		return {
 			method: "get",
-			parameters: this.extractParameters(pathItem.parameters, pathItem.get?.parameters),
+			parameters: this.extractParameters(
+				pathItem.parameters,
+				pathItem.get?.parameters,
+			),
 		};
 	}
 
@@ -64,7 +68,9 @@ export class OpenAPIUtil {
 		pathParameters?: ParametersWithRef,
 		methodParameters?: ParametersWithRef,
 	) {
-		const parameters = (pathParameters ?? []).concat(methodParameters ?? []) as ParameterObject[];
+		const parameters = (pathParameters ?? []).concat(
+			methodParameters ?? [],
+		) as ParameterObject[];
 
 		return parameters.reduce(
 			(acc, param) => {

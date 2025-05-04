@@ -187,10 +187,10 @@ ZodOptional {
 }
 `;
 
-exports[`schema > should create a zod schema for a 'integer' type 1`] = `
+exports[`schema > should create a zod schema for a 'integer not required' type 1`] = `
 ZodOptional {
   "_def": {
-    "description": "ID of pet that needs to be updated",
+    "description": "Age of the pet that needs to be updated",
     "errorMap": [Function],
     "innerType": ZodNumber {
       "_def": {
@@ -201,7 +201,7 @@ ZodOptional {
           },
         ],
         "coerce": false,
-        "description": "ID of pet that needs to be updated",
+        "description": "Age of the pet that needs to be updated",
         "typeName": "ZodNumber",
       },
       "and": [Function],
@@ -261,6 +261,54 @@ ZodOptional {
   "safeParse": [Function],
   "safeParseAsync": [Function],
   "spa": [Function],
+  "superRefine": [Function],
+  "transform": [Function],
+  "~standard": {
+    "validate": [Function],
+    "vendor": "zod",
+    "version": 1,
+  },
+}
+`;
+
+exports[`schema > should create a zod schema for a 'integer' type 1`] = `
+ZodNumber {
+  "_def": {
+    "checks": [
+      {
+        "kind": "int",
+        "message": undefined,
+      },
+    ],
+    "coerce": false,
+    "description": "ID of pet that needs to be updated",
+    "typeName": "ZodNumber",
+  },
+  "and": [Function],
+  "array": [Function],
+  "brand": [Function],
+  "catch": [Function],
+  "default": [Function],
+  "describe": [Function],
+  "isNullable": [Function],
+  "isOptional": [Function],
+  "max": [Function],
+  "min": [Function],
+  "nullable": [Function],
+  "nullish": [Function],
+  "optional": [Function],
+  "or": [Function],
+  "parse": [Function],
+  "parseAsync": [Function],
+  "pipe": [Function],
+  "promise": [Function],
+  "readonly": [Function],
+  "refine": [Function],
+  "refinement": [Function],
+  "safeParse": [Function],
+  "safeParseAsync": [Function],
+  "spa": [Function],
+  "step": [Function],
   "superRefine": [Function],
   "transform": [Function],
   "~standard": {
