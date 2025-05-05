@@ -1,7 +1,10 @@
 import { z } from "zod";
 import type { ParameterObject } from "./types.js";
 
-const buildBaseZodType = (schema: Record<string, unknown>) => {
+// biome-ignore lint/suspicious/noExplicitAny: this is the definition of the schema from the library
+type Schema = any;
+
+const buildBaseZodType = (schema: Schema) => {
 	if (schema.type === "string") {
 		return z.string();
 	}
@@ -18,10 +21,15 @@ const buildBaseZodType = (schema: Record<string, unknown>) => {
 		return z.array(z.any());
 	}
 	if (schema.type === "object") {
-		const zodObjectShape = Object.entries(schema.properties || {}).reduce<
-			Record<string, z.ZodType>
-		>((acc, [propertyName, property]) => {
-			acc[propertyName] = createFromSchema(property);
+		const zodObjectShape = Object.entries<Schema>(
+			schema.properties || {},
+		).reduce<Record<string, z.ZodType>>((acc, [propertyName, property]) => {
+			let zodSchema = createFromSchema(property);
+			if (!property.required && !schema.required?.includes(propertyName)) {
+				zodSchema = zodSchema.optional();
+			}
+
+			acc[propertyName] = zodSchema;
 			return acc;
 		}, {});
 		return z.object(zodObjectShape);
@@ -29,8 +37,8 @@ const buildBaseZodType = (schema: Record<string, unknown>) => {
 	return z.any();
 };
 
-const createFromSchema = (
-	schema: Record<string, string>,
+export const createFromSchema = (
+	schema: Schema,
 	parameter?: ParameterObject,
 ): z.ZodType<unknown> => {
 	const description = parameter?.description || schema?.description || "";
@@ -43,6 +51,6 @@ const createFromSchema = (
 	return zodType;
 };
 
-export const createZodSchema = (
+export const createFromParameter = (
 	parameter: ParameterObject,
 ): z.ZodType<unknown> => createFromSchema(parameter.schema, parameter);

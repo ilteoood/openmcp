@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createZodSchema } from "../src/schema.js";
+import { createFromParameter } from "../src/schema.js";
 import { loadFixtures } from "./utils.js";
 
 describe("schema", () => {
@@ -21,7 +21,7 @@ describe("schema", () => {
 			const petIdParameter =
 				petSchema.paths["/pet/{petId}"].post.parameters[index];
 
-			const zodSchema = createZodSchema(petIdParameter);
+			const zodSchema = createFromParameter(petIdParameter);
 
 			expect(zodSchema).toMatchSnapshot();
 		},
