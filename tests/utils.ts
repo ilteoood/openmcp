@@ -1,8 +1,13 @@
-import { join } from "node:path";
 import SwaggerParser from "@apidevtools/swagger-parser";
+import { join } from "node:path";
+
+export const buildFixturePath = (fileName: string) => {
+	const filePath = new URL(join("fixtures", fileName), import.meta.url);
+	return filePath.toString();
+}
 
 export const loadFixtures = async (fileName: string) => {
-	const filePath = new URL(join("fixtures", fileName), import.meta.url);
+	const filePath = buildFixturePath(fileName);
 
-	return SwaggerParser.parse(filePath.toString());
+	return SwaggerParser.parse(filePath);
 };

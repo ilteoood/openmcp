@@ -55,6 +55,14 @@ export class OpenAPIParser {
 		return pathDefinition;
 	}
 
+	public getInfo() {
+		const info = this.swaggerDocument.info;
+		return {
+			name: info?.title,
+			version: info?.version,
+		}
+	}
+
 	private handleGet(pathItem: PathItemObject) {
 		return basePathItemExtractor(pathItem, HTTPMethods.GET);
 	}

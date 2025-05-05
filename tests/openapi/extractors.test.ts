@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { createFromParameter } from "../src/schema.js";
-import { loadFixtures } from "./utils.js";
+import { createFromParameter } from "../../src/schema.js";
+import { loadFixtures } from "../utils.js";
 
-describe("schema", () => {
+describe("extractors", () => {
 	const fieldsToGenerate = [
 		{ type: "integer", index: 0 },
 		{ type: "string", index: 1 },
