@@ -9,7 +9,14 @@ const buildBaseZodType = (schema: Schema) => {
 		if (schema.enum) {
 			return z.enum(schema.enum);
 		}
-		return z.string();
+		let stringSchema = z.string();
+		if (schema.minLength !== undefined) {
+			stringSchema = stringSchema.min(schema.minLength);
+		}
+		if (schema.maxLength !== undefined) {
+			stringSchema = stringSchema.max(schema.maxLength);
+		}
+		return stringSchema;
 	}
 	if (schema.type === "number" || schema.type === "integer") {
 		let integerSchema = z.number();

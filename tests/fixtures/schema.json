@@ -117,6 +117,12 @@
 							"minimum": 10,
 							"maximum": 40
 						}
+					},
+					{
+						"name": "profilePicture",
+						"in": "header",
+						"description": "Profile picture of the pet that needs to be updated",
+						"schema": { "type": "string", "minLength": 3, "maxLength": 300 }
 					}
 				],
 				"responses": {

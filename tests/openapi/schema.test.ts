@@ -14,11 +14,12 @@ describe("schema", () => {
 		"string with enum",
 		"number with min and max",
 		"integer with min and max",
+		"string with minLength and maxLength",
 	].map((type, index) => ({ type, index }));
 
 	it.each(fieldsToGenerate)(
 		"should create a zod schema for a $type type",
-		async ({ type, index }) => {
+		async ({ index }) => {
 			const petSchema = await loadFixtures("schema.json");
 
 			const petIdParameter =
