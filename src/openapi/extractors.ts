@@ -82,7 +82,7 @@ const extractFormData = (pathItem: PathItemObject): FormDataSchema => {
 		const formDataBody = (
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
-		).content["application/x-www-form-urlencoded"];
+		)?.content?.["application/x-www-form-urlencoded"];
 		requestFormData = formDataBody
 			? createFromSchema(formDataBody.schema)
 			: {};
@@ -107,7 +107,7 @@ const extractRequestBody = (pathItem: PathItemObject): RequestBodySchema => {
 		const jsonBody = (
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
-		).content["application/json"];
+		)?.content?.["application/json"];
 		requestBody = jsonBody ? createFromSchema(jsonBody.schema) : {};
 	}
 
