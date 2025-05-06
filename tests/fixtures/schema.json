@@ -123,6 +123,12 @@
 						"in": "header",
 						"description": "Profile picture of the pet that needs to be updated",
 						"schema": { "type": "string", "minLength": 3, "maxLength": 300 }
+					},
+					{
+						"name": "weight",
+						"in": "cookie",
+						"description": "Weight of the pets that needs to be updated",
+						"schema": { "type": "number", "default": 60.0 }
 					}
 				],
 				"responses": {
