@@ -1,7 +1,7 @@
+import { OpenAPIV3 } from "openapi-types";
 import { describe, expect, it } from "vitest";
 import { basePathItemExtractor } from "../../src/openapi/extractors.js";
 import { OpenAPIParser } from "../../src/openapi/parser.js";
-import { HTTPMethods } from "../../src/types.js";
 import { buildFixturePath, loadFixtures } from "../utils.js";
 
 describe("parser", () => {
@@ -22,7 +22,7 @@ describe("parser", () => {
 		const result = await basePathItemExtractor(
 			"/pet/{petId}",
 			openApiDocument.paths["/pet/{petId}"],
-			HTTPMethods.POST,
+			OpenAPIV3.HttpMethods.POST,
 		);
 
 		expect(result).toMatchSnapshot();
@@ -34,7 +34,7 @@ describe("parser", () => {
 		const result = await basePathItemExtractor(
 			"/pets/location",
 			openApiDocument.paths["/pets/location"],
-			HTTPMethods.POST,
+			OpenAPIV3.HttpMethods.POST,
 		);
 
 		expect(result).toMatchSnapshot();

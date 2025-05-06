@@ -18,7 +18,7 @@ const buildBaseZodType = (schema: Schema) => {
 		return z.boolean();
 	}
 	if (schema.type === "array") {
-		return z.array(z.any());
+		return z.array(createFromSchema(schema.items));
 	}
 	if (schema.type === "object") {
 		const zodObjectShape = Object.entries<Schema>(
