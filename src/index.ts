@@ -8,17 +8,21 @@ export const buildMcpServer = async (resourceLocator: string) => {
 	const server = new McpServer(openApiParser.getInfo());
 
 	for (const path of openApiParser.getPaths()) {
-		server.tool(path.name, { parameters: path.parameters, request: path.request }, (received) => {
-			console.log("received", received);
-			return {
-				content: [
-					{
-						type: "text",
-						text: "Foo",
-					},
-				],
-			};
-		});
+		server.tool(
+			path.name,
+			{ parameters: path.parameters, request: path.request },
+			(received) => {
+				console.log("received", received);
+				return {
+					content: [
+						{
+							type: "text",
+							text: "Foo",
+						},
+					],
+				};
+			},
+		);
 	}
 
 	return server;

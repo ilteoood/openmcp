@@ -39,23 +39,30 @@ export const basePathItemExtractor = (
 	};
 };
 
+const SUPPORTED_PARAMETERS = new Set(["path", "query", "header", "cookie"]);
+
 export const extractParameters = (
 	pathParameters?: ParametersWithRef,
 	methodParameters?: ParametersWithRef,
 ) => {
-	const parameters = (pathParameters ?? []).concat(
-		methodParameters ?? [],
-	) as ParameterObject[];
+	const parameters = (
+		(pathParameters ?? []).concat(methodParameters ?? []) as ParameterObject[]
+	).filter((parameter) => SUPPORTED_PARAMETERS.has(parameter.in));
 
-	const reducedParameters = parameters.reduce<
-		Record<string, ParamRequestObject>
-	>((acc, param) => {
-		const paramSource = param.in as keyof typeof acc;
-		acc[paramSource] ??= {};
-		const paramDestination = acc[paramSource];
-		paramDestination[param.name] = createFromParameter(param);
-		return acc;
-	}, {});
+	const reducedParameters = parameters.reduce(
+		(acc, param) => {
+			const paramSource = param.in as keyof typeof acc;
+			const paramDestination = acc[paramSource];
+			paramDestination[param.name] = createFromParameter(param);
+			return acc;
+		},
+		{
+			path: {} as ParamRequestObject,
+			query: {} as ParamRequestObject,
+			header: {} as ParamRequestObject,
+			cookie: {} as ParamRequestObject,
+		},
+	);
 
 	return createForObject({
 		path: createForObject(reducedParameters.path),
@@ -65,12 +72,11 @@ export const extractParameters = (
 	});
 };
 
-export const requestExtractor = (pathItem: PathItemObject) => {
-	return {
+export const requestExtractor = (pathItem: PathItemObject) =>
+	createForObject({
 		body: extractRequestBody(pathItem),
 		formData: extractFormData(pathItem),
-	};
-};
+	});
 
 const extractFormData = (pathItem: PathItemObject): FormDataSchema => {
 	const formDataParameters = (
@@ -86,7 +92,9 @@ const extractFormData = (pathItem: PathItemObject): FormDataSchema => {
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
 		)?.content?.["application/x-www-form-urlencoded"];
-		requestFormData = formDataBody ? createFromSchema(formDataBody.schema) : {};
+		requestFormData = formDataBody
+			? createFromSchema(formDataBody.schema)
+			: createForObject();
 	}
 
 	return requestFormData;
@@ -106,7 +114,9 @@ const extractRequestBody = (pathItem: PathItemObject): RequestBodySchema => {
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
 		)?.content?.["application/json"];
-		requestBody = jsonBody ? createFromSchema(jsonBody.schema) : {};
+		requestBody = jsonBody
+			? createFromSchema(jsonBody.schema)
+			: createForObject();
 	}
 
 	return requestBody;
