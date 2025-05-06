@@ -40,7 +40,7 @@ const buildBaseZodType = (schema: Schema) => {
 export const createFromSchema = (
 	schema: Schema,
 	parameter?: ParameterObject,
-): z.ZodType<unknown> => {
+): z.ZodType => {
 	const description = parameter?.description || schema?.description || "";
 	const zodType = buildBaseZodType(schema).describe(description);
 
@@ -53,4 +53,6 @@ export const createFromSchema = (
 
 export const createFromParameter = (
 	parameter: ParameterObject,
-): z.ZodType<unknown> => createFromSchema(parameter.schema, parameter);
+): z.ZodType => createFromSchema(parameter.schema, parameter);
+
+export const createForObject = z.object.bind(z)

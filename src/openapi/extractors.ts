@@ -1,12 +1,11 @@
 import type { OpenAPIV3 } from "openapi-types";
-import type { ZodType } from "zod";
-import { createFromParameter, createFromSchema } from "../schema.js";
+import { createForObject, createFromParameter, createFromSchema } from "../schema.js";
 import type {
 	ExtractedPath,
 	FormDataSchema,
+	ParamRequestObject,
 	ParameterObject,
 	ParametersWithRef,
-	ParamRequestObject,
 	PathItemObject,
 	RequestBodySchema,
 } from "../types.js";
@@ -35,6 +34,13 @@ export const basePathItemExtractor = (
 	};
 };
 
+type ReducedParameters = {
+	path: ParamRequestObject;
+	query: ParamRequestObject;
+	header: ParamRequestObject;
+	cookie: ParamRequestObject;
+}
+
 export const extractParameters = (
 	pathParameters?: ParametersWithRef,
 	methodParameters?: ParametersWithRef,
@@ -43,7 +49,7 @@ export const extractParameters = (
 		methodParameters ?? [],
 	) as ParameterObject[];
 
-	return parameters.reduce<ExtractedPath["parameters"]>(
+	const reducedParameters = parameters.reduce<ReducedParameters>(
 		(acc, param) => {
 			const paramSource = param.in as keyof typeof acc;
 			const paramDestination = acc[paramSource];
@@ -57,6 +63,13 @@ export const extractParameters = (
 			cookie: {},
 		},
 	);
+
+	return createForObject({
+		path: createForObject(reducedParameters.path),
+		query: createForObject(reducedParameters.query),
+		header: createForObject(reducedParameters.header),
+		cookie: createForObject(reducedParameters.cookie),
+	})
 };
 
 export const requestExtractor = (pathItem: PathItemObject) => {

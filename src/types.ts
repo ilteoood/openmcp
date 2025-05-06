@@ -1,5 +1,5 @@
 import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from "openapi-types";
-import type { ZodType } from "zod";
+import type { ZodObject, ZodType } from "zod";
 
 export type PathItemObject =
 	| OpenAPIV2.PathItemObject
@@ -25,12 +25,12 @@ export type ExtractedPath = {
 	name: string;
 	path: string;
 	method: OpenAPIV3.HttpMethods;
-	parameters: {
-		path: ParamRequestObject;
-		query: ParamRequestObject;
-		header: ParamRequestObject;
-		cookie: ParamRequestObject;
-	};
+	parameters: ZodObject<{
+		path: ZodType;
+		query: ZodType;
+		header: ZodType;
+		cookie: ZodType;
+	}>;
 	request?: {
 		body: RequestBodySchema;
 		formData: FormDataSchema;
