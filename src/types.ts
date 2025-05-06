@@ -17,18 +17,22 @@ export type ParametersWithRef = (
 	| OpenAPIV3_1.PathItemObject
 )["parameters"];
 
+export type ParamRequestObject = Record<string, ZodType>;
+export type RequestBodySchema = ZodType | ParamRequestObject;
+export type FormDataSchema = ZodType | ParamRequestObject;
+
 export type ExtractedPath = {
 	name: string;
 	path: string;
 	method: OpenAPIV3.HttpMethods;
 	parameters: {
-		path: Record<string, ZodType>;
-		query: Record<string, ZodType>;
-		header: Record<string, ZodType>;
-		cookie: Record<string, ZodType>;
+		path: ParamRequestObject;
+		query: ParamRequestObject;
+		header: ParamRequestObject;
+		cookie: ParamRequestObject;
 	};
 	request?: {
-		body: Record<string, ZodType>;
-		formData: Record<string, ZodType>;
+		body: RequestBodySchema;
+		formData: FormDataSchema;
 	};
 };

@@ -1,9 +1,6 @@
 import SwaggerParser from "@apidevtools/swagger-parser";
-import type { OpenAPI } from "openapi-types";
-import {
-	HTTPMethods,
-	type PathItemObject
-} from "../types.js";
+import { type OpenAPI, OpenAPIV3 } from "openapi-types";
+import type { ExtractedPath, PathItemObject } from "../types.js";
 import { basePathItemExtractor, requestExtractor } from "./extractors.js";
 
 export class OpenAPIParser {
@@ -16,10 +13,10 @@ export class OpenAPIParser {
 		return new OpenAPIParser(dereferencedDocument);
 	}
 
-	public getPaths() {
+	public getPaths(): ExtractedPath[] {
 		const pathsDefinition = this.swaggerDocument.paths || {};
 		const paths = Object.keys(pathsDefinition);
-		const pathDefinition = [];
+		const pathDefinitions: ExtractedPath[] = [];
 
 		for (const path of paths) {
 			const pathItem = pathsDefinition[path];
@@ -27,32 +24,32 @@ export class OpenAPIParser {
 			if (!pathItem) continue;
 
 			if (pathItem.get) {
-				pathDefinition.push(this.handleGet(path, pathItem));
+				pathDefinitions.push(this.handleGet(path, pathItem));
 			}
 			if (pathItem.post) {
-				pathDefinition.push(this.handlePost(path, pathItem));
+				pathDefinitions.push(this.handlePost(path, pathItem));
 			}
 			if (pathItem.put) {
-				pathDefinition.push(this.handlePut(path, pathItem));
+				pathDefinitions.push(this.handlePut(path, pathItem));
 			}
 			if (pathItem.delete) {
-				pathDefinition.push(this.handleDelete(path, pathItem));
+				pathDefinitions.push(this.handleDelete(path, pathItem));
 			}
 			if (pathItem.patch) {
-				pathDefinition.push(this.handlePatch(path, pathItem));
+				pathDefinitions.push(this.handlePatch(path, pathItem));
 			}
 			if (pathItem.options) {
-				pathDefinition.push(this.handleOptions(path, pathItem));
+				pathDefinitions.push(this.handleOptions(path, pathItem));
 			}
 			if (pathItem.head) {
-				pathDefinition.push(this.handleHead(path, pathItem));
+				pathDefinitions.push(this.handleHead(path, pathItem));
 			}
 			if ("trace" in pathItem) {
-				pathDefinition.push(this.handleTrace(path, pathItem));
+				pathDefinitions.push(this.handleTrace(path, pathItem));
 			}
 		}
 
-		return pathDefinition;
+		return pathDefinitions;
 	}
 
 	public getInfo() {
@@ -60,47 +57,47 @@ export class OpenAPIParser {
 		return {
 			name: info.title,
 			version: info.version,
-		}
+		};
 	}
 
 	private handleGet(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, HTTPMethods.GET);
+		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.GET);
 	}
 
 	private handlePost(path: string, pathItem: PathItemObject) {
 		return {
-			...basePathItemExtractor(path, pathItem, HTTPMethods.POST),
+			...basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.POST),
 			request: requestExtractor(pathItem),
 		};
 	}
 
 	private handlePut(path: string, pathItem: PathItemObject) {
 		return {
-			...basePathItemExtractor(path, pathItem, HTTPMethods.PUT),
+			...basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.PUT),
 			request: requestExtractor(pathItem),
 		};
 	}
 
 	private handleDelete(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, HTTPMethods.DELETE);
+		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.DELETE);
 	}
 
 	private handlePatch(path: string, pathItem: PathItemObject) {
 		return {
-			...basePathItemExtractor(path, pathItem, HTTPMethods.PATCH),
+			...basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.PATCH),
 			request: requestExtractor(pathItem),
 		};
 	}
 
 	private handleOptions(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, HTTPMethods.OPTIONS);
+		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.OPTIONS);
 	}
 
 	private handleHead(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, HTTPMethods.HEAD);
+		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.HEAD);
 	}
 
 	private handleTrace(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, HTTPMethods.TRACE);
+		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.TRACE);
 	}
 }

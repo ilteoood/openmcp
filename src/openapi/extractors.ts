@@ -3,9 +3,12 @@ import type { ZodType } from "zod";
 import { createFromParameter, createFromSchema } from "../schema.js";
 import type {
 	ExtractedPath,
+	FormDataSchema,
 	ParameterObject,
 	ParametersWithRef,
+	ParamRequestObject,
 	PathItemObject,
+	RequestBodySchema,
 } from "../types.js";
 
 const extractNameFromPath = (path: string) => {
@@ -63,56 +66,56 @@ export const requestExtractor = (pathItem: PathItemObject) => {
 	};
 };
 
-const extractFormData = (pathItem: PathItemObject) => {
+const extractFormData = (pathItem: PathItemObject): FormDataSchema => {
 	const formDataParameters = (
 		pathItem.post?.parameters as ParameterObject[] | undefined
 	)?.filter((param) => param.in === "formData");
 
-	let requestBody: ZodType | undefined;
+	let requestFormData: FormDataSchema;
 
 	if (formDataParameters) {
-		requestBody = formDataParameters.reduce(
+		requestFormData = formDataParameters.reduce(
 			bodyParamsReducer,
 			{},
-		) as unknown as ZodType;
+		);
 	} else {
 		const formDataBody = (
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
 		).content["application/x-www-form-urlencoded"];
-		requestBody = formDataBody
+		requestFormData = formDataBody
 			? createFromSchema(formDataBody.schema)
-			: undefined;
+			: {};
 	}
 
-	return requestBody;
+	return requestFormData;
 };
 
-const extractRequestBody = (pathItem: PathItemObject) => {
+const extractRequestBody = (pathItem: PathItemObject): RequestBodySchema => {
 	const bodyParameters = (
 		pathItem.post?.parameters as ParameterObject[] | undefined
 	)?.filter((param) => param.in === "body");
 
-	let requestBody: ZodType | undefined;
+	let requestBody: RequestBodySchema;
 
 	if (bodyParameters) {
 		requestBody = bodyParameters.reduce(
 			bodyParamsReducer,
 			{},
-		) as unknown as ZodType;
+		);
 	} else {
 		const jsonBody = (
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
 		).content["application/json"];
-		requestBody = jsonBody ? createFromSchema(jsonBody.schema) : undefined;
+		requestBody = jsonBody ? createFromSchema(jsonBody.schema) : {};
 	}
 
 	return requestBody;
 };
 
 const bodyParamsReducer = (
-	acc: Record<string, ZodType>,
+	acc: ParamRequestObject,
 	param: ParameterObject,
 ) => {
 	acc[param.name] = createFromParameter(param);
