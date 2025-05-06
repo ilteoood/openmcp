@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { type ZodRawShape, z } from "zod";
 import type { ParamRequestObject, ParameterObject } from "./types.js";
 
 // biome-ignore lint/suspicious/noExplicitAny: this is the definition of the schema from the library
@@ -54,7 +54,8 @@ export const createFromSchema = (
 export const createFromParameter = (parameter: ParameterObject): z.ZodType =>
 	createFromSchema(parameter.schema, parameter);
 
-export const createForObject = z.object.bind(z);
+export const createForObject = (object: ZodRawShape = {}) =>
+	Object.keys(object).length ? z.object(object) : z.void();
 
 export const createFromParameters = (parameterObjects: ParameterObject[]) => {
 	const parameters = parameterObjects.reduce<ParamRequestObject>(
