@@ -27,28 +27,28 @@ export class OpenAPIParser {
 			if (!pathItem) continue;
 
 			if (pathItem.get) {
-				pathDefinition.push(this.handleGet(pathItem));
+				pathDefinition.push(this.handleGet(path, pathItem));
 			}
 			if (pathItem.post) {
-				pathDefinition.push(this.handlePost(pathItem));
+				pathDefinition.push(this.handlePost(path, pathItem));
 			}
 			if (pathItem.put) {
-				pathDefinition.push(this.handlePut(pathItem));
+				pathDefinition.push(this.handlePut(path, pathItem));
 			}
 			if (pathItem.delete) {
-				pathDefinition.push(this.handleDelete(pathItem));
+				pathDefinition.push(this.handleDelete(path, pathItem));
 			}
 			if (pathItem.patch) {
-				pathDefinition.push(this.handlePatch(pathItem));
+				pathDefinition.push(this.handlePatch(path, pathItem));
 			}
 			if (pathItem.options) {
-				pathDefinition.push(this.handleOptions(pathItem));
+				pathDefinition.push(this.handleOptions(path, pathItem));
 			}
 			if (pathItem.head) {
-				pathDefinition.push(this.handleHead(pathItem));
+				pathDefinition.push(this.handleHead(path, pathItem));
 			}
 			if ("trace" in pathItem) {
-				pathDefinition.push(this.handleTrace(pathItem));
+				pathDefinition.push(this.handleTrace(path, pathItem));
 			}
 		}
 
@@ -63,44 +63,44 @@ export class OpenAPIParser {
 		}
 	}
 
-	private handleGet(pathItem: PathItemObject) {
-		return basePathItemExtractor(pathItem, HTTPMethods.GET);
+	private handleGet(path: string, pathItem: PathItemObject) {
+		return basePathItemExtractor(path, pathItem, HTTPMethods.GET);
 	}
 
-	private handlePost(pathItem: PathItemObject) {
+	private handlePost(path: string, pathItem: PathItemObject) {
 		return {
-			...basePathItemExtractor(pathItem, HTTPMethods.POST),
+			...basePathItemExtractor(path, pathItem, HTTPMethods.POST),
 			request: requestExtractor(pathItem),
 		};
 	}
 
-	private handlePut(pathItem: PathItemObject) {
+	private handlePut(path: string, pathItem: PathItemObject) {
 		return {
-			...basePathItemExtractor(pathItem, HTTPMethods.PUT),
+			...basePathItemExtractor(path, pathItem, HTTPMethods.PUT),
 			request: requestExtractor(pathItem),
 		};
 	}
 
-	private handleDelete(pathItem: PathItemObject) {
-		return basePathItemExtractor(pathItem, HTTPMethods.DELETE);
+	private handleDelete(path: string, pathItem: PathItemObject) {
+		return basePathItemExtractor(path, pathItem, HTTPMethods.DELETE);
 	}
 
-	private handlePatch(pathItem: PathItemObject) {
+	private handlePatch(path: string, pathItem: PathItemObject) {
 		return {
-			...basePathItemExtractor(pathItem, HTTPMethods.PATCH),
+			...basePathItemExtractor(path, pathItem, HTTPMethods.PATCH),
 			request: requestExtractor(pathItem),
 		};
 	}
 
-	private handleOptions(pathItem: PathItemObject) {
-		return basePathItemExtractor(pathItem, HTTPMethods.OPTIONS);
+	private handleOptions(path: string, pathItem: PathItemObject) {
+		return basePathItemExtractor(path, pathItem, HTTPMethods.OPTIONS);
 	}
 
-	private handleHead(pathItem: PathItemObject) {
-		return basePathItemExtractor(pathItem, HTTPMethods.HEAD);
+	private handleHead(path: string, pathItem: PathItemObject) {
+		return basePathItemExtractor(path, pathItem, HTTPMethods.HEAD);
 	}
 
-	private handleTrace(pathItem: PathItemObject) {
-		return basePathItemExtractor(pathItem, HTTPMethods.TRACE);
+	private handleTrace(path: string, pathItem: PathItemObject) {
+		return basePathItemExtractor(path, pathItem, HTTPMethods.TRACE);
 	}
 }

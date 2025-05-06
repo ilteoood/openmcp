@@ -1,29 +1,34 @@
 import { describe, expect, it } from "vitest";
-import { createFromParameter } from "../../src/schema.js";
-import { loadFixtures } from "../utils.js";
+import { basePathItemExtractor } from "../../src/openapi/extractors.js";
+import { OpenAPIParser } from "../../src/openapi/parser.js";
+import { HTTPMethods } from "../../src/types.js";
+import { buildFixturePath, loadFixtures } from "../utils.js";
 
-describe("extractors", () => {
-	const fieldsToGenerate = [
-		{ type: "integer", index: 0 },
-		{ type: "string", index: 1 },
-		{ type: "boolean", index: 2 },
-		{ type: "number", index: 3 },
-		{ type: "array", index: 4 },
-		{ type: "object", index: 5 },
-		{ type: "integer not required", index: 6 },
-	];
+describe("parser", () => {
+  it("can correctly return the informations", async () => {
+    const schemaPath = buildFixturePath("schema.json");
 
-	it.each(fieldsToGenerate)(
-		"should create a zod schema for a $type type",
-		async ({ type, index }) => {
-			const petSchema = await loadFixtures("schema.json");
+    const openApiParser = await OpenAPIParser.from(schemaPath);
 
-			const petIdParameter =
-				petSchema.paths["/pet/{petId}"].post.parameters[index];
+    expect(openApiParser.getInfo()).toStrictEqual({
+      name: "Swagger Petstore - OpenAPI 3.0",
+      version: "1.0.26",
+    });
+  });
 
-			const zodSchema = createFromParameter(petIdParameter);
+  it("can correctly return base path item", async () => {
+	  const openApiDocument = await loadFixtures("schema.json");
 
-			expect(zodSchema).toMatchSnapshot();
-		},
-	);
+	  const result = await basePathItemExtractor("/pet/{petId}", openApiDocument.paths["/pet/{petId}"], HTTPMethods.POST);
+
+	  expect(result).toMatchSnapshot();
+  })
+
+	it("can correctly return base path item - generated name", async () => {
+		const openApiDocument = await loadFixtures("schema.json");
+
+		const result = await basePathItemExtractor("/pets/location", openApiDocument.paths["/pets/location"], HTTPMethods.POST);
+
+		expect(result).toMatchSnapshot();
+	})
 });

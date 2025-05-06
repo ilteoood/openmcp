@@ -1,17 +1,30 @@
 import { describe, expect, it } from "vitest";
-import { OpenAPIParser } from "../../src/openapi/parser.js";
-import { buildFixturePath } from "../utils.js";
+import { createFromParameter } from "../../src/schema.js";
+import { loadFixtures } from "../utils.js";
 
-describe("parser", () => {
-    it("can correctly return the informations", async () => {
-            const schemaPath = buildFixturePath("schema.json");
+describe("extractors", () => {
+    const fieldsToGenerate = [
+        { type: "integer", index: 0 },
+        { type: "string", index: 1 },
+        { type: "boolean", index: 2 },
+        { type: "number", index: 3 },
+        { type: "array", index: 4 },
+        { type: "object", index: 5 },
+        { type: "integer not required", index: 6 },
+    ];
 
-            const openApiParser = await OpenAPIParser.from(schemaPath)
+    it.each(fieldsToGenerate)(
+        "should create a zod schema for a $type type",
+        async ({ type, index }) => {
+            const petSchema = await loadFixtures("schema.json");
 
-            expect(openApiParser.getInfo()).toStrictEqual({
-                name: "Swagger Petstore - OpenAPI 3.0",
-                version: "1.0.26",
-            });
+            const petIdParameter =
+                petSchema.paths["/pet/{petId}"].post.parameters[index];
+
+            const zodSchema = createFromParameter(petIdParameter);
+
+            expect(zodSchema).toMatchSnapshot();
         },
     );
 });
+

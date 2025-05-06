@@ -7,15 +7,23 @@ import type {
 	PathItemObject,
 } from "../types.js";
 
+const extractNameFromPath = (path: string) => {
+	return path.split("/").filter(segment => segment && !segment.startsWith("{")).join("-");
+}
+
 export const basePathItemExtractor = (
+	path: string,
 	pathItem: PathItemObject,
 	method: OpenAPIV3.HttpMethods,
 ) => {
+	const pathItemMethod = (pathItem as OpenAPIV3.PathItemObject)[method]
 	return {
+		name: pathItemMethod?.operationId ?? extractNameFromPath(path),
 		method,
+		path,
 		parameters: extractParameters(
 			pathItem.parameters,
-			(pathItem as OpenAPIV3.PathItemObject)[method]?.parameters,
+			pathItemMethod?.parameters,
 		),
 	};
 }

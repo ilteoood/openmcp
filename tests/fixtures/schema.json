@@ -103,6 +103,32 @@
 				},
 				"security": [{ "petstore_auth": ["write:pets", "read:pets"] }]
 			}
+		},
+		"/pets/location": {
+			"get": {
+				"tags": ["pet"],
+				"summary": "Finds Pets by location",
+				"description": "Multiple status values can be provided with comma separated strings",
+				"parameters": [
+					{
+						"name": "location",
+						"in": "query",
+						"description": "Location of the pet that needs to be updated",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {},
+							"application/xml": {}
+						}
+					},
+					"default": { "description": "Unexpected error" }
+				}
+			}
 		}
 	}
 }
