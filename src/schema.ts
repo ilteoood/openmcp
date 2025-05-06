@@ -11,7 +11,7 @@ const buildBaseZodType = (schema: Schema) => {
 		}
 		return z.string();
 	}
-	if (schema.type === "number" || schema.type === 'integer') {
+	if (schema.type === "number" || schema.type === "integer") {
 		let integerSchema = z.number();
 		if (schema.minimum !== undefined) {
 			integerSchema = integerSchema.min(schema.minimum);
@@ -19,7 +19,7 @@ const buildBaseZodType = (schema: Schema) => {
 		if (schema.maximum !== undefined) {
 			integerSchema = integerSchema.max(schema.maximum);
 		}
-		if (schema.type === 'integer') {
+		if (schema.type === "integer") {
 			integerSchema = integerSchema.int();
 		}
 		return integerSchema;

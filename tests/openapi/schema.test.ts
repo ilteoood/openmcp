@@ -13,6 +13,7 @@ describe("schema", () => {
 		"integer not required",
 		"string with enum",
 		"number with min and max",
+		"integer with min and max",
 	].map((type, index) => ({ type, index }));
 
 	it.each(fieldsToGenerate)(

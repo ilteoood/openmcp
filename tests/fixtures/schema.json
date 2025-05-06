@@ -107,6 +107,16 @@
 							"minimum": 0,
 							"maximum": 100
 						}
+					},
+					{
+						"name": "age",
+						"in": "cookie",
+						"description": "Age of the pet that needs to be updated",
+						"schema": {
+							"type": "integer",
+							"minimum": 10,
+							"maximum": 40
+						}
 					}
 				],
 				"responses": {
