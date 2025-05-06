@@ -1,5 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
-import { createForObject, createFromParameter, createFromSchema } from "../schema.js";
+import { createForObject, createFromParameter, createFromParameters, createFromSchema } from "../schema.js";
 import type {
 	ExtractedPath,
 	FormDataSchema,
@@ -34,13 +34,6 @@ export const basePathItemExtractor = (
 	};
 };
 
-type ReducedParameters = {
-	path: ParamRequestObject;
-	query: ParamRequestObject;
-	header: ParamRequestObject;
-	cookie: ParamRequestObject;
-}
-
 export const extractParameters = (
 	pathParameters?: ParametersWithRef,
 	methodParameters?: ParametersWithRef,
@@ -49,7 +42,7 @@ export const extractParameters = (
 		methodParameters ?? [],
 	) as ParameterObject[];
 
-	const reducedParameters = parameters.reduce<ReducedParameters>(
+	const reducedParameters = parameters.reduce(
 		(acc, param) => {
 			const paramSource = param.in as keyof typeof acc;
 			const paramDestination = acc[paramSource];
@@ -57,10 +50,10 @@ export const extractParameters = (
 			return acc;
 		},
 		{
-			path: {},
-			query: {},
-			header: {},
-			cookie: {},
+			path: {} as ParamRequestObject,
+			query: {} as ParamRequestObject,
+			header: {} as ParamRequestObject,
+			cookie: {} as ParamRequestObject,
 		},
 	);
 
@@ -87,10 +80,7 @@ const extractFormData = (pathItem: PathItemObject): FormDataSchema => {
 	let requestFormData: FormDataSchema;
 
 	if (formDataParameters) {
-		requestFormData = formDataParameters.reduce(
-			bodyParamsReducer,
-			{},
-		);
+		requestFormData = createFromParameters(formDataParameters);
 	} else {
 		const formDataBody = (
 			(pathItem.post as OpenAPIV3.OperationObject)
@@ -112,10 +102,7 @@ const extractRequestBody = (pathItem: PathItemObject): RequestBodySchema => {
 	let requestBody: RequestBodySchema;
 
 	if (bodyParameters) {
-		requestBody = bodyParameters.reduce(
-			bodyParamsReducer,
-			{},
-		);
+		requestBody = createFromParameters(bodyParameters);
 	} else {
 		const jsonBody = (
 			(pathItem.post as OpenAPIV3.OperationObject)
@@ -125,12 +112,4 @@ const extractRequestBody = (pathItem: PathItemObject): RequestBodySchema => {
 	}
 
 	return requestBody;
-};
-
-const bodyParamsReducer = (
-	acc: ParamRequestObject,
-	param: ParameterObject,
-) => {
-	acc[param.name] = createFromParameter(param);
-	return acc;
 };

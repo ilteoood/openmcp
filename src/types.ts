@@ -18,8 +18,8 @@ export type ParametersWithRef = (
 )["parameters"];
 
 export type ParamRequestObject = Record<string, ZodType>;
-export type RequestBodySchema = ZodType | ParamRequestObject;
-export type FormDataSchema = ZodType | ParamRequestObject;
+export type RequestBodySchema = ZodType | object;
+export type FormDataSchema = ZodType | object;
 
 export type ExtractedPath = {
 	name: string;
@@ -31,8 +31,8 @@ export type ExtractedPath = {
 		header: ZodType;
 		cookie: ZodType;
 	}>;
-	request?: {
-		body: RequestBodySchema;
-		formData: FormDataSchema;
-	};
+	request?: ZodObject<{
+		body: ZodType;
+		formData: ZodType;
+	}>;
 };
