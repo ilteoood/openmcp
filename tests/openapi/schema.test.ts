@@ -4,14 +4,15 @@ import { loadFixtures } from "../utils.js";
 
 describe("schema", () => {
 	const fieldsToGenerate = [
-		{ type: "integer", index: 0 },
-		{ type: "string", index: 1 },
-		{ type: "boolean", index: 2 },
-		{ type: "number", index: 3 },
-		{ type: "array", index: 4 },
-		{ type: "object", index: 5 },
-		{ type: "integer not required", index: 6 },
-	];
+		"integer",
+		"string",
+		"boolean",
+		"number",
+		"array",
+		"object",
+		"integer not required",
+		"string with enum",
+	].map((type, index) => ({ type, index }));
 
 	it.each(fieldsToGenerate)(
 		"should create a zod schema for a $type type",

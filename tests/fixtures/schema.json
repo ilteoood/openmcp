@@ -88,6 +88,15 @@
 						"in": "query",
 						"description": "Age of the pet that needs to be updated",
 						"schema": { "type": "integer" }
+					},
+					{
+						"name": "status",
+						"in": "query",
+						"description": "Age of the pet that needs to be updated",
+						"schema": {
+							"type": "string",
+							"enum": ["available", "pending", "sold"]
+						}
 					}
 				],
 				"responses": {
