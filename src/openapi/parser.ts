@@ -58,8 +58,8 @@ export class OpenAPIParser {
 	public getInfo() {
 		const info = this.swaggerDocument.info;
 		return {
-			name: info?.title,
-			version: info?.version,
+			name: info.title,
+			version: info.version,
 		}
 	}
 
