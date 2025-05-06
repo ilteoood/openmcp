@@ -92,10 +92,20 @@
 					{
 						"name": "status",
 						"in": "query",
-						"description": "Age of the pet that needs to be updated",
+						"description": "Status of the pet that needs to be updated",
 						"schema": {
 							"type": "string",
 							"enum": ["available", "pending", "sold"]
+						}
+					},
+					{
+						"name": "width",
+						"in": "header",
+						"description": "Width of the pet that needs to be updated",
+						"schema": {
+							"type": "number",
+							"minimum": 0,
+							"maximum": 100
 						}
 					}
 				],

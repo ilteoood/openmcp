@@ -11,11 +11,18 @@ const buildBaseZodType = (schema: Schema) => {
 		}
 		return z.string();
 	}
-	if (schema.type === "number") {
-		return z.number();
-	}
-	if (schema.type === "integer") {
-		return z.number().int();
+	if (schema.type === "number" || schema.type === 'integer') {
+		let integerSchema = z.number();
+		if (schema.minimum !== undefined) {
+			integerSchema = integerSchema.min(schema.minimum);
+		}
+		if (schema.maximum !== undefined) {
+			integerSchema = integerSchema.max(schema.maximum);
+		}
+		if (schema.type === 'integer') {
+			integerSchema = integerSchema.int();
+		}
+		return integerSchema;
 	}
 	if (schema.type === "boolean") {
 		return z.boolean();
