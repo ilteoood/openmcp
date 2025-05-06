@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`parser > can correctly return base path item - generated name 1`] = `
+exports[`extractors > can correctly return base path item - generated name 1`] = `
 {
   "method": "post",
   "name": "pets-location",
@@ -78,10 +78,44 @@ exports[`parser > can correctly return base path item - generated name 1`] = `
     },
   },
   "path": "/pets/location",
+  "request": ZodVoid {
+    "_def": {
+      "typeName": "ZodVoid",
+    },
+    "and": [Function],
+    "array": [Function],
+    "brand": [Function],
+    "catch": [Function],
+    "default": [Function],
+    "describe": [Function],
+    "isNullable": [Function],
+    "isOptional": [Function],
+    "nullable": [Function],
+    "nullish": [Function],
+    "optional": [Function],
+    "or": [Function],
+    "parse": [Function],
+    "parseAsync": [Function],
+    "pipe": [Function],
+    "promise": [Function],
+    "readonly": [Function],
+    "refine": [Function],
+    "refinement": [Function],
+    "safeParse": [Function],
+    "safeParseAsync": [Function],
+    "spa": [Function],
+    "superRefine": [Function],
+    "transform": [Function],
+    "~standard": {
+      "validate": [Function],
+      "vendor": "zod",
+      "version": 1,
+    },
+  },
 }
 `;
 
-exports[`parser > can correctly return base path item 1`] = `
+exports[`extractors > can correctly return base path item 1`] = `
 {
   "method": "post",
   "name": "updatePetWithForm",
@@ -159,5 +193,39 @@ exports[`parser > can correctly return base path item 1`] = `
     },
   },
   "path": "/pet/{petId}",
+  "request": ZodVoid {
+    "_def": {
+      "typeName": "ZodVoid",
+    },
+    "and": [Function],
+    "array": [Function],
+    "brand": [Function],
+    "catch": [Function],
+    "default": [Function],
+    "describe": [Function],
+    "isNullable": [Function],
+    "isOptional": [Function],
+    "nullable": [Function],
+    "nullish": [Function],
+    "optional": [Function],
+    "or": [Function],
+    "parse": [Function],
+    "parseAsync": [Function],
+    "pipe": [Function],
+    "promise": [Function],
+    "readonly": [Function],
+    "refine": [Function],
+    "refinement": [Function],
+    "safeParse": [Function],
+    "safeParseAsync": [Function],
+    "spa": [Function],
+    "superRefine": [Function],
+    "transform": [Function],
+    "~standard": {
+      "validate": [Function],
+      "vendor": "zod",
+      "version": 1,
+    },
+  },
 }
 `;

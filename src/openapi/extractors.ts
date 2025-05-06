@@ -36,16 +36,20 @@ export const basePathItemExtractor = (
 			pathItem.parameters,
 			pathItemMethod?.parameters,
 		),
-		request: createForObject()
+		request: createForObject(),
 	};
 };
 
-export const pathItemWithBodyExtractor = (path: string, pathItem: PathItemObject, method: OpenAPIV3.HttpMethods) => {
+export const pathItemWithBodyExtractor = (
+	path: string,
+	pathItem: PathItemObject,
+	method: OpenAPIV3.HttpMethods,
+) => {
 	return {
 		...basePathItemExtractor(path, pathItem, method),
 		request: requestExtractor(pathItem),
 	};
-}
+};
 
 const SUPPORTED_PARAMETERS = new Set(["path", "query", "header", "cookie"]);
 

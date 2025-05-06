@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`extractors > should create a zod schema for a 'array' type 1`] = `
+exports[`schema > should create a zod schema for a 'array' type 1`] = `
 ZodOptional {
   "_def": {
     "description": "List of owners of the pet that needs to be updated",
@@ -158,7 +158,7 @@ ZodOptional {
 }
 `;
 
-exports[`extractors > should create a zod schema for a 'boolean' type 1`] = `
+exports[`schema > should create a zod schema for a 'boolean' type 1`] = `
 ZodOptional {
   "_def": {
     "description": "Status of pet that needs to be updated",
@@ -233,7 +233,7 @@ ZodOptional {
 }
 `;
 
-exports[`extractors > should create a zod schema for a 'integer not required' type 1`] = `
+exports[`schema > should create a zod schema for a 'integer not required' type 1`] = `
 ZodOptional {
   "_def": {
     "description": "Age of the pet that needs to be updated",
@@ -317,7 +317,7 @@ ZodOptional {
 }
 `;
 
-exports[`extractors > should create a zod schema for a 'integer' type 1`] = `
+exports[`schema > should create a zod schema for a 'integer' type 1`] = `
 ZodNumber {
   "_def": {
     "checks": [
@@ -365,7 +365,7 @@ ZodNumber {
 }
 `;
 
-exports[`extractors > should create a zod schema for a 'number' type 1`] = `
+exports[`schema > should create a zod schema for a 'number' type 1`] = `
 ZodOptional {
   "_def": {
     "description": "Height of the pet that needs to be updated",
@@ -444,7 +444,7 @@ ZodOptional {
 }
 `;
 
-exports[`extractors > should create a zod schema for a 'object' type 1`] = `
+exports[`schema > should create a zod schema for a 'object' type 1`] = `
 ZodOptional {
   "_def": {
     "description": "General informations about the pet that needs to be updated",
@@ -557,7 +557,7 @@ ZodOptional {
 }
 `;
 
-exports[`extractors > should create a zod schema for a 'string' type 1`] = `
+exports[`schema > should create a zod schema for a 'string' type 1`] = `
 ZodOptional {
   "_def": {
     "description": "Name of pet that needs to be updated",

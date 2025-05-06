@@ -6,6 +6,9 @@ type Schema = any;
 
 const buildBaseZodType = (schema: Schema) => {
 	if (schema.type === "string") {
+		if (schema.enum) {
+			return z.enum(schema.enum);
+		}
 		return z.string();
 	}
 	if (schema.type === "number") {
