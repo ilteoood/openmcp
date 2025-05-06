@@ -1,5 +1,10 @@
 import type { OpenAPIV3 } from "openapi-types";
-import { createForObject, createFromParameter, createFromParameters, createFromSchema } from "../schema.js";
+import {
+	createForObject,
+	createFromParameter,
+	createFromParameters,
+	createFromSchema,
+} from "../schema.js";
 import type {
 	ExtractedPath,
 	FormDataSchema,
@@ -42,27 +47,22 @@ export const extractParameters = (
 		methodParameters ?? [],
 	) as ParameterObject[];
 
-	const reducedParameters = parameters.reduce(
-		(acc, param) => {
-			const paramSource = param.in as keyof typeof acc;
-			const paramDestination = acc[paramSource];
-			paramDestination[param.name] = createFromParameter(param);
-			return acc;
-		},
-		{
-			path: {} as ParamRequestObject,
-			query: {} as ParamRequestObject,
-			header: {} as ParamRequestObject,
-			cookie: {} as ParamRequestObject,
-		},
-	);
+	const reducedParameters = parameters.reduce<
+		Record<string, ParamRequestObject>
+	>((acc, param) => {
+		const paramSource = param.in as keyof typeof acc;
+		acc[paramSource] ??= {};
+		const paramDestination = acc[paramSource];
+		paramDestination[param.name] = createFromParameter(param);
+		return acc;
+	}, {});
 
 	return createForObject({
 		path: createForObject(reducedParameters.path),
 		query: createForObject(reducedParameters.query),
 		header: createForObject(reducedParameters.header),
 		cookie: createForObject(reducedParameters.cookie),
-	})
+	});
 };
 
 export const requestExtractor = (pathItem: PathItemObject) => {
@@ -86,9 +86,7 @@ const extractFormData = (pathItem: PathItemObject): FormDataSchema => {
 			(pathItem.post as OpenAPIV3.OperationObject)
 				?.requestBody as OpenAPIV3.RequestBodyObject
 		)?.content?.["application/x-www-form-urlencoded"];
-		requestFormData = formDataBody
-			? createFromSchema(formDataBody.schema)
-			: {};
+		requestFormData = formDataBody ? createFromSchema(formDataBody.schema) : {};
 	}
 
 	return requestFormData;

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { ParameterObject, ParamRequestObject } from "./types.js";
+import type { ParamRequestObject, ParameterObject } from "./types.js";
 
 // biome-ignore lint/suspicious/noExplicitAny: this is the definition of the schema from the library
 type Schema = any;
@@ -51,11 +51,10 @@ export const createFromSchema = (
 	return zodType;
 };
 
-export const createFromParameter = (
-	parameter: ParameterObject,
-): z.ZodType => createFromSchema(parameter.schema, parameter);
+export const createFromParameter = (parameter: ParameterObject): z.ZodType =>
+	createFromSchema(parameter.schema, parameter);
 
-export const createForObject = z.object.bind(z)
+export const createForObject = z.object.bind(z);
 
 export const createFromParameters = (parameterObjects: ParameterObject[]) => {
 	const parameters = parameterObjects.reduce<ParamRequestObject>(
@@ -68,4 +67,4 @@ export const createFromParameters = (parameterObjects: ParameterObject[]) => {
 	);
 
 	return createForObject(parameters);
-}
+};
