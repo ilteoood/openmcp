@@ -33,7 +33,7 @@ export type ExtractedPath = {
 				cookie: ZodType | ZodVoid;
 		  }>
 		| ZodVoid;
-	request?:
+	request:
 		| ZodObject<{
 				body: ZodType | ZodVoid;
 				formData: ZodType | ZodVoid;

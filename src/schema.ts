@@ -54,8 +54,8 @@ export const createFromSchema = (
 export const createFromParameter = (parameter: ParameterObject): z.ZodType =>
 	createFromSchema(parameter.schema, parameter);
 
-export const createForObject = (object: ZodRawShape = {}) =>
-	Object.keys(object).length ? z.object(object) : z.void();
+export const createForObject = <T extends ZodRawShape>(object?: T) =>
+	object && Object.keys(object).length ? z.object(object) : z.void();
 
 export const createFromParameters = (parameterObjects: ParameterObject[]) => {
 	const parameters = parameterObjects.reduce<ParamRequestObject>(

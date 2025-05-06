@@ -1,7 +1,7 @@
 import SwaggerParser from "@apidevtools/swagger-parser";
 import { type OpenAPI, OpenAPIV3 } from "openapi-types";
-import type { ExtractedPath, PathItemObject } from "../types.js";
-import { basePathItemExtractor, requestExtractor } from "./extractors.js";
+import type { ExtractedPath } from "../types.js";
+import { basePathItemExtractor, pathItemWithBodyExtractor } from "./extractors.js";
 
 export class OpenAPIParser {
 	private constructor(private swaggerDocument: OpenAPI.Document) {}
@@ -24,28 +24,28 @@ export class OpenAPIParser {
 			if (!pathItem) continue;
 
 			if (pathItem.get) {
-				pathDefinitions.push(this.handleGet(path, pathItem));
+				pathDefinitions.push(basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.GET));
 			}
 			if (pathItem.post) {
-				pathDefinitions.push(this.handlePost(path, pathItem));
+				pathDefinitions.push(pathItemWithBodyExtractor(path, pathItem, OpenAPIV3.HttpMethods.POST));
 			}
 			if (pathItem.put) {
-				pathDefinitions.push(this.handlePut(path, pathItem));
+				pathDefinitions.push(pathItemWithBodyExtractor(path, pathItem, OpenAPIV3.HttpMethods.PUT));
 			}
 			if (pathItem.delete) {
-				pathDefinitions.push(this.handleDelete(path, pathItem));
+				pathDefinitions.push(basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.DELETE));
 			}
 			if (pathItem.patch) {
-				pathDefinitions.push(this.handlePatch(path, pathItem));
+				pathDefinitions.push(pathItemWithBodyExtractor(path, pathItem, OpenAPIV3.HttpMethods.PATCH));
 			}
 			if (pathItem.options) {
-				pathDefinitions.push(this.handleOptions(path, pathItem));
+				pathDefinitions.push(basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.OPTIONS));
 			}
 			if (pathItem.head) {
-				pathDefinitions.push(this.handleHead(path, pathItem));
+				pathDefinitions.push(basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.HEAD));
 			}
 			if ("trace" in pathItem) {
-				pathDefinitions.push(this.handleTrace(path, pathItem));
+				pathDefinitions.push(basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.TRACE));
 			}
 		}
 
@@ -58,46 +58,5 @@ export class OpenAPIParser {
 			name: info.title,
 			version: info.version,
 		};
-	}
-
-	private handleGet(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.GET);
-	}
-
-	private handlePost(path: string, pathItem: PathItemObject) {
-		return {
-			...basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.POST),
-			request: requestExtractor(pathItem),
-		};
-	}
-
-	private handlePut(path: string, pathItem: PathItemObject) {
-		return {
-			...basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.PUT),
-			request: requestExtractor(pathItem),
-		};
-	}
-
-	private handleDelete(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.DELETE);
-	}
-
-	private handlePatch(path: string, pathItem: PathItemObject) {
-		return {
-			...basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.PATCH),
-			request: requestExtractor(pathItem),
-		};
-	}
-
-	private handleOptions(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.OPTIONS);
-	}
-
-	private handleHead(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.HEAD);
-	}
-
-	private handleTrace(path: string, pathItem: PathItemObject) {
-		return basePathItemExtractor(path, pathItem, OpenAPIV3.HttpMethods.TRACE);
 	}
 }

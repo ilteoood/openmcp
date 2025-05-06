@@ -12,7 +12,6 @@ export const buildMcpServer = async (resourceLocator: string) => {
 			path.name,
 			{ parameters: path.parameters, request: path.request },
 			(received) => {
-				console.log("received", received);
 				return {
 					content: [
 						{
