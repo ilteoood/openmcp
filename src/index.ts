@@ -11,12 +11,48 @@ export const buildMcpServer = async (resourceLocator: string) => {
 		server.tool(
 			path.name,
 			{ parameters: path.parameters, request: path.request },
-			(received) => {
+			async ({parameters, request}) => {
+				const pathParameters = parameters?.path || {};
+
+				const replacedPath = Object.entries(pathParameters).reduce(
+					(acc, [key, value]) => acc.replace(`{${key}}`, `${value}`),
+					path.path,
+				);
+
+				const requestBody = request?.body;
+
+				const url = new URL(`https://petstore.swagger.io/v2/${replacedPath}`);
+
+				let formData: FormData | undefined;
+
+				if (request?.formData) {
+					formData = new FormData()
+					for (const [key, value] of Object.entries(request.formData)) {
+						formData.append(key, `${value}`);
+					}
+				}
+				if (parameters?.query) {
+					const urlSearchParams = new URLSearchParams();
+					for (const [key, value] of Object.entries(parameters.query)) {
+						urlSearchParams.append(key, `${value}`);
+					}
+				}
+
+				const response = await fetch(`https://petstore.swagger.io/v2/${replacedPath}`, {
+					method: path.method,
+					headers: parameters?.header,
+					body: formData ?? (requestBody && JSON.stringify(requestBody)),
+				})
+
+				if (!response.ok) {
+					throw new Error(`Request failed with status ${response.status}`);
+				}
+
 				return {
 					content: [
 						{
 							type: "text",
-							text: "Foo",
+							text: JSON.stringify(await response.json()),
 						},
 					],
 				};
@@ -28,7 +64,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 };
 
 const mcpServer = await buildMcpServer(
-	"https://petstore3.swagger.io/api/v3/openapi.json",
+	"https://petstore.swagger.io/v2/swagger.json",
 );
 
 const transport = new StdioServerTransport();
