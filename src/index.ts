@@ -21,7 +21,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 
 				const requestBody = request?.body;
 
-				const url = new URL(`https://petstore.swagger.io/v2/${replacedPath}`);
+				const url = new URL(`https://petstore.swagger.io/v2${replacedPath}`);
 
 				let formData: FormData | undefined;
 
