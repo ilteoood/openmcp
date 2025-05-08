@@ -32,13 +32,12 @@ export const buildMcpServer = async (resourceLocator: string) => {
 					}
 				}
 				if (parameters?.query) {
-					const urlSearchParams = new URLSearchParams();
 					for (const [key, value] of Object.entries(parameters.query)) {
-						urlSearchParams.append(key, `${value}`);
+						url.searchParams.append(key, `${value}`);
 					}
 				}
 
-				const response = await fetch(`https://petstore.swagger.io/v2/${replacedPath}`, {
+				const response = await fetch(url, {
 					method: path.method,
 					headers: parameters?.header,
 					body: formData ?? (requestBody && JSON.stringify(requestBody)),
