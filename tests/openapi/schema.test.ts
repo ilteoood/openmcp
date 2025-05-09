@@ -16,6 +16,7 @@ describe("schema", () => {
 		"integer with min and max",
 		"string with minLength and maxLength",
 		"number with default",
+		"unknown type",
 	].map((type, index) => ({ type, index }));
 
 	it.each(fieldsToGenerate)(

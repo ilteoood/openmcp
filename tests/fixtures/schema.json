@@ -129,6 +129,12 @@
 						"in": "cookie",
 						"description": "Weight of the pets that needs to be updated",
 						"schema": { "type": "number", "default": 60.0 }
+					},
+					{
+						"name": "unknown",
+						"in": "header",
+						"description": "Unknown type that should not be updated",
+						"schema": { "type": "foo" }
 					}
 				],
 				"responses": {
