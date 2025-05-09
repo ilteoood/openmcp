@@ -11,7 +11,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 		server.tool(
 			path.name,
 			{ parameters: path.parameters, request: path.request },
-			async ({parameters, request}) => {
+			async ({ parameters, request }) => {
 				const pathParameters = parameters?.path || {};
 
 				const replacedPath = Object.entries(pathParameters).reduce(
@@ -26,7 +26,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 				let formData: FormData | undefined;
 
 				if (request?.formData) {
-					formData = new FormData()
+					formData = new FormData();
 					for (const [key, value] of Object.entries(request.formData)) {
 						formData.append(key, `${value}`);
 					}
@@ -41,7 +41,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 					method: path.method,
 					headers: parameters?.header,
 					body: formData ?? (requestBody && JSON.stringify(requestBody)),
-				})
+				});
 
 				if (!response.ok) {
 					throw new Error(`Request failed with status ${response.status}`);
