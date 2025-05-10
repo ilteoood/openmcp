@@ -1,5 +1,5 @@
 import SwaggerParser from "@apidevtools/swagger-parser";
-import { type OpenAPI, OpenAPIV3 } from "openapi-types";
+import { type OpenAPI, type OpenAPIV2, OpenAPIV3 } from "openapi-types";
 import type { ExtractedPath } from "../types.js";
 import {
 	basePathItemExtractor,
@@ -7,13 +7,16 @@ import {
 } from "./extractors.js";
 
 export class OpenAPIParser {
-	private constructor(private swaggerDocument: OpenAPI.Document) {}
+	private constructor(
+		private swaggerDocument: OpenAPI.Document,
+		private resourceLocator: URL,
+	) {}
 
 	static async from(resourceLocator: string): Promise<OpenAPIParser> {
 		const parsedDocument = await SwaggerParser.parse(resourceLocator);
 		const dereferencedDocument =
 			await SwaggerParser.dereference(parsedDocument);
-		return new OpenAPIParser(dereferencedDocument);
+		return new OpenAPIParser(dereferencedDocument, new URL(resourceLocator));
 	}
 
 	public getPaths(): ExtractedPath[] {
@@ -81,5 +84,28 @@ export class OpenAPIParser {
 			name: info.title,
 			version: info.version,
 		};
+	}
+
+	public getHosts() {
+		const swaggerDocument = this.swaggerDocument as OpenAPIV2.Document;
+		if (swaggerDocument.swagger) {
+			const schemes = swaggerDocument.schemes?.length
+				? swaggerDocument.schemes
+				: [this.resourceLocator.protocol.slice(0, -1)];
+
+			return schemes.map(
+				(scheme) =>
+					`${scheme}://${swaggerDocument.host ?? this.resourceLocator.host}${swaggerDocument.basePath ?? ""}`,
+			);
+		}
+
+		const openApiDocumentV3 = this.swaggerDocument as OpenAPIV3.Document;
+
+		const servers = openApiDocumentV3.servers || [{ url: "" }];
+
+		return servers.map(
+			(server) =>
+				`${this.resourceLocator.protocol}//${this.resourceLocator.host}${server.url}`,
+		);
 	}
 }
