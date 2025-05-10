@@ -4,7 +4,7 @@ import { basePathItemExtractor } from "../../src/openapi/extractors.js";
 import { loadFixtures } from "../utils.js";
 
 describe("extractors", () => {
-	describe('basePathItemExtractor', () => {
+	describe("basePathItemExtractor", () => {
 		it("can correctly return base path item", async () => {
 			const openApiDocument = await loadFixtures("schema.json");
 
@@ -28,5 +28,5 @@ describe("extractors", () => {
 
 			expect(result).toMatchSnapshot();
 		});
-	})
+	});
 });

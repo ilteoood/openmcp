@@ -3,7 +3,7 @@ import { createFromParameter, createFromParameters } from "../../src/schema.js";
 import { loadFixtures } from "../utils.js";
 
 describe("schema", () => {
-	describe('createFromParameter', () => {
+	describe("createFromParameter", () => {
 		const fieldsToGenerate = [
 			"integer",
 			"string",
@@ -33,15 +33,14 @@ describe("schema", () => {
 				expect(zodSchema).toMatchSnapshot();
 			},
 		);
-	})
+	});
 
-	it('should create a zod schema from an array of parameters', async () => {
+	it("should create a zod schema from an array of parameters", async () => {
 		const petSchema = await loadFixtures("schema.json");
 
-		const petIdParameters =
-			petSchema.paths["/pet/{petId}"].post.parameters
+		const petIdParameters = petSchema.paths["/pet/{petId}"].post.parameters;
 
 		const zodSchema = createFromParameters(petIdParameters);
 		expect(zodSchema).toMatchSnapshot();
-	})
+	});
 });
