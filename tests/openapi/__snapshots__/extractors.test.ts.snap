@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`extractors > can correctly return base path item - generated name 1`] = `
+exports[`extractors > basePathItemExtractor > can correctly return base path item - generated name 1`] = `
 {
   "method": "post",
   "name": "pets-location",
@@ -115,7 +115,7 @@ exports[`extractors > can correctly return base path item - generated name 1`] =
 }
 `;
 
-exports[`extractors > can correctly return base path item 1`] = `
+exports[`extractors > basePathItemExtractor > can correctly return base path item 1`] = `
 {
   "method": "post",
   "name": "updatePetWithForm",
