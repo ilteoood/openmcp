@@ -175,6 +175,102 @@
 					},
 					"default": { "description": "Unexpected error" }
 				}
+			},
+			"patch": {
+				"tags": ["pet"],
+				"summary": "Update Pets by location",
+				"description": "A single location must be provided",
+				"parameters": [
+					{
+						"name": "location",
+						"in": "query",
+						"description": "Location of the pet that needs to be updated",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {},
+							"application/xml": {}
+						}
+					},
+					"default": { "description": "Unexpected error" }
+				}
+			},
+			"head": {
+				"tags": ["pet"],
+				"summary": "Retrieve Pets if changed",
+				"description": "A single location must be provided",
+				"parameters": [
+					{
+						"name": "location",
+						"in": "query",
+						"description": "Location of the pet that needs to be updated",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {},
+							"application/xml": {}
+						}
+					},
+					"default": { "description": "Unexpected error" }
+				}
+			},
+			"options": {
+				"tags": ["pet"],
+				"summary": "Check if Pets by location endpoint is available",
+				"description": "A single location must be provided",
+				"parameters": [
+					{
+						"name": "location",
+						"in": "query",
+						"description": "Location of the pet that needs to be updated",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {},
+							"application/xml": {}
+						}
+					},
+					"default": { "description": "Unexpected error" }
+				}
+			},
+			"trace": {
+				"tags": ["pet"],
+				"summary": "Echo the Pets by location",
+				"description": "A single location must be provided",
+				"parameters": [
+					{
+						"name": "location",
+						"in": "query",
+						"description": "Location of the pet that needs to be updated",
+						"required": true,
+						"schema": { "type": "string" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {},
+							"application/xml": {}
+						}
+					},
+					"default": { "description": "Unexpected error" }
+				}
 			}
 		}
 	}
