@@ -4,6 +4,7 @@ import {
 	createFromParameter,
 	createFromParameters,
 	createFromSchema,
+	oneOf,
 } from "../schema.js";
 import type {
 	ExtractedPath,
@@ -37,6 +38,9 @@ export const basePathItemExtractor = (
 			pathItemMethod?.parameters,
 		),
 		request: createForObject(),
+		security: oneOf(
+			pathItemMethod?.security?.flatMap((security) => Object.keys(security)),
+		),
 	};
 };
 

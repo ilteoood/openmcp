@@ -1,5 +1,5 @@
 import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from "openapi-types";
-import type { ZodObject, ZodType, ZodVoid } from "zod";
+import type { ZodEnum, ZodObject, ZodType, ZodVoid } from "zod";
 
 export type PathItemObject =
 	| OpenAPIV2.PathItemObject
@@ -39,4 +39,5 @@ export type ExtractedPath = {
 				formData: ZodType | ZodVoid;
 		  }>
 		| ZodVoid;
+	security: ZodEnum<[string, ...string[]]> | ZodVoid;
 };
