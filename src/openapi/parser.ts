@@ -111,4 +111,15 @@ export class OpenAPIParser {
 			return `${this.resourceLocator.protocol}//${this.resourceLocator.host}${server.url}`;
 		});
 	}
+
+	public getSecurityDefinitions() {
+		const swaggerDocument = this.swaggerDocument as OpenAPIV2.Document;
+		if (swaggerDocument.swagger) {
+			return swaggerDocument.securityDefinitions ?? {};
+		}
+
+		const openApiDocumentV3 = this.swaggerDocument as OpenAPIV3.Document;
+
+		return openApiDocumentV3.components?.securitySchemes ?? {};
+	}
 }
