@@ -38,9 +38,7 @@ export const basePathItemExtractor = (
 			pathItemMethod?.parameters,
 		),
 		request: createForObject(),
-		security: oneOf(
-			pathItemMethod?.security?.flatMap((security) => Object.keys(security)),
-		),
+		security: oneOf(pathItemMethod?.security?.flatMap(Object.keys)),
 	};
 };
 
