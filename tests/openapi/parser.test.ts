@@ -53,13 +53,13 @@ describe("parser", () => {
 		});
 	});
 
-	describe("getHosts", () => {
+	describe("getBaseUrls", () => {
 		it("can correctly parse a swagger 2.0 schema", async () => {
 			const schemaPath = buildFixturePath("petstore2.json");
 
 			const openApiParser = await OpenAPIParser.from(schemaPath);
 
-			expect(openApiParser.getHosts()).toStrictEqual([
+			expect(openApiParser.getBaseUrls()).toStrictEqual([
 				"https://petstore.swagger.io/v2",
 				"http://petstore.swagger.io/v2",
 			]);
@@ -70,7 +70,7 @@ describe("parser", () => {
 
 			const openApiParser = await OpenAPIParser.from(schemaPath);
 
-			expect(openApiParser.getHosts()).toStrictEqual(["file:///api/v3"]);
+			expect(openApiParser.getBaseUrls()).toStrictEqual(["file:///api/v3"]);
 		});
 
 		it("can correctly parse a custom schema", async () => {
@@ -78,7 +78,7 @@ describe("parser", () => {
 
 			const openApiParser = await OpenAPIParser.from(schemaPath);
 
-			expect(openApiParser.getHosts()).toStrictEqual([
+			expect(openApiParser.getBaseUrls()).toStrictEqual([
 				"https://petstore3.swagger.io/api/v3",
 			]);
 		});

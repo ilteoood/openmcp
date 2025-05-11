@@ -8,7 +8,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 
 	const server = new McpServer(openApiParser.getInfo());
 
-	const baseUrls = openApiParser.getHosts();
+	const baseUrls = openApiParser.getBaseUrls();
 
 	let [baseUrl] = baseUrls;
 

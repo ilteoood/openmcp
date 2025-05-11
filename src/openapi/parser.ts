@@ -86,7 +86,7 @@ export class OpenAPIParser {
 		};
 	}
 
-	public getHosts() {
+	public getBaseUrls() {
 		const swaggerDocument = this.swaggerDocument as OpenAPIV2.Document;
 		if (swaggerDocument.swagger) {
 			const schemes = swaggerDocument.schemes?.length
