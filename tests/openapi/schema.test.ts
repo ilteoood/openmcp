@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { createFromParameter, createFromParameters } from "../../src/schema.js";
+import {
+	createFromParameter,
+	createFromParameters,
+	oneOf,
+} from "../../src/schema.js";
 import { loadFixtures } from "../utils.js";
 
 describe("schema", () => {
@@ -42,5 +46,22 @@ describe("schema", () => {
 
 		const zodSchema = createFromParameters(petIdParameters);
 		expect(zodSchema).toMatchSnapshot();
+	});
+
+	describe("oneOf", () => {
+		it("should create a zod schema from a string array", () => {
+			const zodSchema = oneOf(["a", "b", "c"]);
+			expect(zodSchema).toMatchSnapshot();
+		});
+
+		it("should create a zod schema from an empty array", () => {
+			const zodSchema = oneOf([]);
+			expect(zodSchema).toMatchSnapshot();
+		});
+
+		it("should create a zod schema from an undefined parameter", () => {
+			const zodSchema = oneOf(undefined);
+			expect(zodSchema).toMatchSnapshot();
+		});
 	});
 });
