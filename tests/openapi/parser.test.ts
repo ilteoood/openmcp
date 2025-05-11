@@ -72,5 +72,15 @@ describe("parser", () => {
 
 			expect(openApiParser.getHosts()).toStrictEqual(["file:///api/v3"]);
 		});
+
+		it("can correctly parse a custom schema", async () => {
+			const schemaPath = buildFixturePath("schema.json");
+
+			const openApiParser = await OpenAPIParser.from(schemaPath);
+
+			expect(openApiParser.getHosts()).toStrictEqual([
+				"https://petstore3.swagger.io/api/v3",
+			]);
+		});
 	});
 });
