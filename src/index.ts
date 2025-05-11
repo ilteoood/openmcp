@@ -1,11 +1,40 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
 import { OpenAPIParser } from "./openapi/parser.js";
 
 export const buildMcpServer = async (resourceLocator: string) => {
 	const openApiParser = await OpenAPIParser.from(resourceLocator);
 
 	const server = new McpServer(openApiParser.getInfo());
+
+	const baseUrls = openApiParser.getHosts();
+
+	let [baseUrl] = baseUrls;
+
+	if (baseUrls.length > 1) {
+		server.prompt("multipleHostsFound", {}, () => ({
+			messages: [
+				{
+					role: "assistant",
+					content: {
+						type: "text",
+						text: `Please select a base URL for the API. Available options are: ${baseUrls.join(", ")}`,
+					},
+				},
+			],
+		}));
+		server.tool(
+			"multipleHostsFound",
+			{ baseUrl: z.string().describe("API Base URL") },
+			({ baseUrl: newBaseUrl }) => {
+				baseUrl = newBaseUrl;
+				return {
+					content: [],
+				};
+			},
+		);
+	}
 
 	for (const path of openApiParser.getPaths()) {
 		server.tool(
@@ -21,7 +50,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 
 				const requestBody = request?.body;
 
-				const url = new URL(`https://petstore.swagger.io/v2${replacedPath}`);
+				const url = new URL(`${baseUrl}${replacedPath}`);
 
 				let formData: FormData | undefined;
 
@@ -63,7 +92,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 };
 
 const mcpServer = await buildMcpServer(
-	"https://petstore.swagger.io/v2/swagger.json",
+	"https://petstore3.swagger.io/api/v3/openapi.json",
 );
 
 const transport = new StdioServerTransport();
