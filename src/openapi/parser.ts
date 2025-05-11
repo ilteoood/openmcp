@@ -103,9 +103,12 @@ export class OpenAPIParser {
 
 		const servers = openApiDocumentV3.servers || [{ url: "" }];
 
-		return servers.map(
-			(server) =>
-				`${this.resourceLocator.protocol}//${this.resourceLocator.host}${server.url}`,
-		);
+		return servers.map((server) => {
+			if (server.url.startsWith("http")) {
+				return server.url;
+			}
+
+			return `${this.resourceLocator.protocol}//${this.resourceLocator.host}${server.url}`;
+		});
 	}
 }
