@@ -1,7 +1,10 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { httpCookie } from "cookie-muncher";
 import { z } from "zod";
 import { OpenAPIParser } from "./openapi/parser.js";
+
+const SUPPORTED_SECURITY_TYPES = new Set(["apiKey", "http", "basic"]);
 
 export const buildMcpServer = async (resourceLocator: string) => {
 	const openApiParser = await OpenAPIParser.from(resourceLocator);
@@ -36,7 +39,15 @@ export const buildMcpServer = async (resourceLocator: string) => {
 		);
 	}
 
+	const securityDefinitions = openApiParser.getSecurityDefinitions();
+
 	for (const path of openApiParser.getPaths()) {
+		const securityKeys = path.security?.find((security) =>
+			security.every((security) =>
+				SUPPORTED_SECURITY_TYPES.has(securityDefinitions[security]?.type),
+			),
+		);
+
 		server.tool(
 			path.name,
 			{ parameters: path.parameters, request: path.request },
@@ -66,9 +77,44 @@ export const buildMcpServer = async (resourceLocator: string) => {
 					}
 				}
 
+				const header = parameters?.header || {};
+				const cookie = parameters?.cookie || {};
+
+				if (securityKeys?.length) {
+					for (const securityKey of securityKeys) {
+						const securityDefinition = securityDefinitions[securityKey];
+						if (securityDefinition.type === "apiKey") {
+							const apiKeyIn = securityDefinition.in;
+							if (apiKeyIn === "header") {
+								header[securityDefinition.name] = "TODO";
+							} else if (apiKeyIn === "query") {
+								url.searchParams.append(securityDefinition.name, "TODO");
+							} else if (apiKeyIn === "cookie") {
+								cookie[securityDefinition.name] = "TODO";
+							}
+						} else if (
+							(securityDefinition.type === "http" &&
+								securityDefinition.scheme === "basic") ||
+							securityDefinition.type === "basic"
+						) {
+							const authHeader = `Basic ${btoa("TODO:TODO")}`;
+							header.Authorization = authHeader;
+						} else if (
+							securityDefinition.type === "http" &&
+							securityDefinition.scheme === "bearer"
+						) {
+							const authHeader = "Bearer TODO";
+							header.Authorization = authHeader;
+						}
+					}
+				}
+
 				const response = await fetch(url, {
 					method: path.method,
-					headers: parameters?.header,
+					headers: {
+						...header,
+						Cookie: httpCookie.serialize(cookie),
+					},
 					body: formData ?? (requestBody && JSON.stringify(requestBody)),
 				});
 
