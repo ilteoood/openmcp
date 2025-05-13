@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	createFromParameter,
-	createFromParameters
-} from "../../src/schema.js";
+import { createFromParameter, createFromParameters } from "../../src/schema.js";
 import { loadFixtures } from "../utils.js";
 
 describe("schema", () => {

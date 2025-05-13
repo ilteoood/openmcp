@@ -112,7 +112,9 @@ export class OpenAPIParser {
 		});
 	}
 
-	public getSecurityDefinitions() {
+	public getSecurityDefinitions():
+		| OpenAPIV2.SecurityDefinitionsObject
+		| Record<string, OpenAPIV3.SecuritySchemeObject> {
 		const swaggerDocument = this.swaggerDocument as OpenAPIV2.Document;
 		if (swaggerDocument.swagger) {
 			return swaggerDocument.securityDefinitions ?? {};
@@ -120,6 +122,9 @@ export class OpenAPIParser {
 
 		const openApiDocumentV3 = this.swaggerDocument as OpenAPIV3.Document;
 
-		return openApiDocumentV3.components?.securitySchemes ?? {};
+		return (openApiDocumentV3.components?.securitySchemes ?? {}) as Record<
+			string,
+			OpenAPIV3.SecuritySchemeObject
+		>;
 	}
 }
