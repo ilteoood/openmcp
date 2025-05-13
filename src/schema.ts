@@ -90,6 +90,3 @@ export const createFromParameters = (parameterObjects: ParameterObject[]) => {
 
 	return createForObject(parameters);
 };
-
-export const oneOf = (types?: string[]) =>
-	types?.length ? z.enum(types as [string, ...string[]]) : z.void();
