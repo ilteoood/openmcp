@@ -39,5 +39,5 @@ export type ExtractedPath = {
 				formData: ZodType | ZodVoid;
 		  }>
 		| ZodVoid;
-	security: ZodEnum<[string, ...string[]]> | ZodVoid;
+	security?: string[][];
 };
