@@ -67,9 +67,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 		}));
 		server.tool(
 			"multipleHostsFound",
-			// biome-ignore lint/suspicious/noExplicitAny: needed to avoid infinite type recursion in DTS build
 			{ inputSchema: { baseUrl: z.string().describe("API Base URL") } as any },
-			// biome-ignore lint/suspicious/noExplicitAny: needed to avoid infinite type recursion in DTS build
 			({ baseUrl: newBaseUrl }: any) => {
 				baseUrl = newBaseUrl;
 				return {
@@ -91,10 +89,8 @@ export const buildMcpServer = async (resourceLocator: string) => {
 		server.tool(
 			path.name,
 			{
-				// biome-ignore lint/suspicious/noExplicitAny: needed to avoid infinite type recursion in DTS build
 				inputSchema: path.parameters as any,
 			},
-			// biome-ignore lint/suspicious/noExplicitAny: needed to avoid infinite type recursion in DTS build
 			async ({ parameters, request }: any) => {
 				const pathParameters = parameters?.path || {};
 
