@@ -65,10 +65,12 @@ export const buildMcpServer = async (resourceLocator: string) => {
 				},
 			],
 		}));
-		server.tool(
+		server.registerTool(
 			"multipleHostsFound",
-			{ inputSchema: { baseUrl: z.string().describe("API Base URL") } as any },
-			({ baseUrl: newBaseUrl }: any) => {
+			{
+				inputSchema: z.object({ baseUrl: z.string().describe("API Base URL") }),
+			},
+			({ baseUrl: newBaseUrl }) => {
 				baseUrl = newBaseUrl;
 				return {
 					content: [],
@@ -86,12 +88,14 @@ export const buildMcpServer = async (resourceLocator: string) => {
 			),
 		);
 
-		server.tool(
+		server.registerTool(
 			path.name,
 			{
 				inputSchema: path.parameters as any,
 			},
-			async ({ parameters, request }: any) => {
+			async (args: any) => {
+				const parameters = args?.parameters || {};
+				const request = args?.request || {};
 				const pathParameters = parameters?.path || {};
 
 				const replacedPath = Object.entries(pathParameters).reduce(
@@ -146,7 +150,7 @@ export const buildMcpServer = async (resourceLocator: string) => {
 				return {
 					content: [
 						{
-							type: "text",
+							type: "text" as const,
 							text: JSON.stringify(await response.json()),
 						},
 					],

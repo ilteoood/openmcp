@@ -1,7 +1,6 @@
 import { type ZodRawShape, type ZodType, z } from "zod";
 import type { ParamRequestObject, ParameterObject } from "./types.js";
 
-// biome-ignore lint/suspicious/noExplicitAny: this is the definition of the schema from the library
 type Schema = any;
 
 const buildBaseZodType = (schema: Schema) => {

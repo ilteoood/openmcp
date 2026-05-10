@@ -22,7 +22,7 @@
 		"@apidevtools/swagger-parser": "^10.1.1",
 		"@modelcontextprotocol/sdk": "^1.11.2",
 		"cookie-muncher": "^0.4.6",
-		"zod": "^3.24.4"
+		"zod": "^3.25.76"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
